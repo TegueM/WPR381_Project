@@ -1,0 +1,22 @@
+{
+  "name": "wpr381_project",
+  "version": "1.0.0",
+  "description": "web 381 project 1",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TegueM/WPR381_Project.git"
+  },
+  "keywords": [
+    "project"
+  ],
+  "author": "Hendrik Venter, Juan-Pierre Prinsloo, Tegue Morrison, Deaven Nortier, Rucardo Kruger, Johan Strauss",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TegueM/WPR381_Project/issues"
+  },
+  "homepage": "https://github.com/TegueM/WPR381_Project#readme"
+}
