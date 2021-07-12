@@ -37,13 +37,20 @@ function executeOption(option){
     if (option.toLowerCase() == 'compress folder' || option.toLowerCase() == 'c') {
         console.log('You chose compression');
         // call the appropiate method for compression
-        compress('C:/Users/jppri/Documents/TestIng');
-
+        try {
+            compress('C:/Users/jppri/Documents/TestIng');
+        } catch (error) {
+            console.log('Error: Could not compress file/s');
+        }
     } 
     else if (option.toLowerCase() == 'extract folder' || option.toLowerCase() == 'e') {
         console.log('You chose extraction');
         //call the appropriate method for extraction
-        extract('C:/Users/jppri/Documents/TestIng');
+        try {
+            extract('C:/Users/jppri/Documents/TestIng');
+        } catch (error) {
+            console.log('Error: Could not extract file/s');
+        }
     }
     else {
         console.log('Please choose a valid option');
