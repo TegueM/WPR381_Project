@@ -1,5 +1,6 @@
 const readline = require('readline');
-//https://www.npmjs.com/package/figlet
+const art = require('ascii-art'); // npm install ascii-art
+
 const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
@@ -18,7 +19,12 @@ const getInput = () => {
 }
 
 const run = async () => {
-    console.log('Welcome to the amazing extracti-nator!');
+    try {
+        let rendered = await art.font("Welcome to the amazing extracti-nator!", 'doom').completed();
+        console.log(rendered);
+    } catch (error) {
+        console.log("nope");
+    }
     await getInput();
     rl.close();
 }

@@ -18,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/TegueM/WPR381_Project/issues"
   },
-  "homepage": "https://github.com/TegueM/WPR381_Project#readme"
+  "homepage": "https://github.com/TegueM/WPR381_Project#readme",
+  "dependencies": {
+    "ascii-art": "^2.8.1"
+  }
 }
