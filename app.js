@@ -1,5 +1,7 @@
 const readline = require('readline');
 const art = require('ascii-art'); // npm install ascii-art
+const compress = require('./compress');
+const extract = require('./extract');
 
 const rl = readline.createInterface({
     input: process.stdin,
@@ -35,10 +37,13 @@ function executeOption(option){
     if (option.toLowerCase() == 'compress folder' || option.toLowerCase() == 'c') {
         console.log('You chose compression');
         // call the appropiate method for compression
+        compress('C:/Users/jppri/Documents/TestIng');
+
     } 
     else if (option.toLowerCase() == 'extract folder' || option.toLowerCase() == 'e') {
         console.log('You chose extraction');
         //call the appropriate method for extraction
+        extract('C:/Users/jppri/Documents/TestIng');
     }
     else {
         console.log('Please choose a valid option');

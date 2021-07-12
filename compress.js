@@ -2,6 +2,7 @@
 //npm install archiver --save
 var archiver = require('archiver');
 const fs = require('fs');
+const path = require('path');
 
 //Method to read list of folders and files
 const getAllFiles = function(dirPath, arrayOfFiles) {
