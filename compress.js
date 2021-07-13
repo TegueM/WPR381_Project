@@ -17,21 +17,18 @@ const getAllFiles = function(dirPath, arrayOfFiles) {
 	  } else {
 		arrayOfFiles.push(path.join(dirPath, "/", file))
 	  }
-	});
+	})
   
-	return arrayOfFiles;
-}
+	return arrayOfFiles
+  }
 
 //method to compress mutliple folders
-function compressFiles(dirPath){
+function compressFiles(dirPath){	
 	getAllFiles(dirPath).forEach(element => {
-
-		let dashArray = element.split("\\");
-		let l = dashArray.length;
-
 		if (element.endsWith('.zip')){
 			console.log(element + " already compressed!");
 		} else {
+
 			var output = fs.createWriteStream(element + '.zip');
 		
 			var archive = archiver('zip');
@@ -40,7 +37,7 @@ function compressFiles(dirPath){
 				console.log(archive.pointer() + ' total bytes');
 				console.log(element);
 			});
-
+	
 			archive.on('warning', function(err) {
 				if (err.code === 'ENOENT') {
 					console.log(`Something went wrong: ${err.code}`);
@@ -48,26 +45,47 @@ function compressFiles(dirPath){
 					throw err;
 				}
 			});
-
+	
 			archive.on('error', function(err){
 				throw err.toString();
 			});
-
+	
 			archive.pipe(output);
-
-			const extensionCheck = element.split(".");
-
-			if (extensionCheck[1] == null){
-				archive.directory(element, dashArray[l-1]);
-			} else{
-				let file = dashArray[l-1];
-				archive.append(element, {name: file});
-			}
+	
+			archive.directory(element, false);
+	
 			archive.finalize();
 		}
 	});
+
+	var output = fs.createWriteStream(dirPath + '.zip');
+			
+	var archive = archiver('zip');
+
+	output.on('close', function () {
+		console.log(archive.pointer() + ' total bytes');
+		//console.log(element);
+	});
+
+	archive.on('warning', function(err) {
+		if (err.code === 'ENOENT') {
+			console.log(`Something went wrong: ${err.code}`);
+		} else {
+			throw err;
+		}
+	});
+
+	archive.on('error', function(err){
+		throw err.toString();
+	});
+	
+	archive.pipe(output);
+	
+	archive.directory(dirPath, false);
+	
+	archive.finalize();
 }
 
 //compressFiles(dirPath1);
 
-module.exports= compressFiles;
+module.exports = compressFiles;

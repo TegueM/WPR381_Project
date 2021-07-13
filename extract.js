@@ -1,5 +1,3 @@
-let dirPath1 = 'C:/Users/YourSelf/Desktop/Test1'; //file extraction path
-
 //install extract-zip module
 //npm install extract-zip --save
 
@@ -16,24 +14,38 @@ async function extractZip(source, target) {
 	}
   }
 
-  const unzipFiles = async function (dirPath) {
-	const files = fs.readdirSync(dirPath);
+const unzipFiles = async function (dirPath) {
+
+	if (dirPath.endsWith('.zip')){
+		await unzipRoot(dirPath);
+		const newDirPath = dirPath.replace(".zip", "");
+		await unzipFiles(newDirPath);
+	}
+	else{
+		const files = fs.readdirSync(dirPath);
   
-	await Promise.all(
-	  files.map(async (file) => {
-		if (fs.statSync(dirPath + "/" + file).isDirectory()) {
-		  await unzipFiles(dirPath + "/" + file);
-		} else {
-		  const fullFilePath = path.join(dirPath, "/", file);
-		  const folderName = file.replace(".zip", "");
-		  if (file.endsWith(".zip")) {
-			await extractZip(fullFilePath, dirPath);
-			await unzipFiles(dirPath + "/" + folderName);
-		  }
-		}
-	  })
-	);
-  };
+		await Promise.all(
+		  files.map(async (file) => {
+			if (fs.statSync(dirPath + "/" + file).isDirectory()) {
+			  await unzipFiles(dirPath + "/" + file);
+			} else {
+			  const fullFilePath = path.join(dirPath, "/", file);
+			  const folderName = file.replace(".zip", "");
+			  if (file.endsWith(".zip")) {
+				await extractZip(fullFilePath, path.join(dirPath, "/", folderName));
+				await unzipFiles(dirPath + "/" + folderName);
+			  }
+			}
+		  })
+		);
+	}	
+};
+
+const unzipRoot = async function (dirPath) {
+	const newRoot = dirPath.replace(".zip", "");
+
+	await extractZip(dirPath, newRoot);
+};
 
 //unzipFiles(dirPath1);
 //removeDir(dirPath1);
