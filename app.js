@@ -35,10 +35,11 @@ run();
 
 function executeOption(option){
     if (option.toLowerCase() == 'compress folder' || option.toLowerCase() == 'c') {
-        console.log('You chose compression');
-        // call the appropiate method for compression
+        //console.log('You chose compression');
         try {
-            compress('C:/Users/jppri/Documents/TestIng');
+            rl.question('Please enter the file path you want to compress...', (path) => {
+                compress(validateInput(path));
+            });
         } catch (error) {
             console.log('Error: Could not compress file/s');
         }
@@ -47,7 +48,9 @@ function executeOption(option){
         console.log('You chose extraction');
         //call the appropriate method for extraction
         try {
-            extract('C:/Users/jppri/Documents/TestIng');
+            rl.question('Please enter the file path you want to extract...', (path) => {
+                extract(validateInput(path));
+            })
         } catch (error) {
             console.log('Error: Could not extract file/s');
         }
@@ -55,5 +58,14 @@ function executeOption(option){
     else {
         console.log('Please choose a valid option');
         run();
+    }
+}
+
+function validateInput(path){
+    if (path == null) {
+        console.log('Please provide a path');
+        run();
+    } else {
+        return path;
     }
 }
