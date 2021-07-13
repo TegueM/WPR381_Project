@@ -17,36 +17,80 @@ const getAllFiles = function(dirPath, arrayOfFiles) {
 	  } else {
 		arrayOfFiles.push(path.join(dirPath, "/", file))
 	  }
-	});
+	})
   
-	return arrayOfFiles;
-}
+	return arrayOfFiles
+  }
 
 //method to compress mutliple folders
-const compressFiles = function(dirPath1){
-	getAllFiles(dirPath1).forEach(element => {
-		if (!element.endsWith('.zip')){
-			var output = fs.createWriteStream(element + '.zip');
-			var archive = archiver('zip');
+function compressFiles(dirPath){
 	
-			output.on('close', function () {
-				console.log(archive.pointer() + ' total bytes');
-				console.log(element + ' compressed!');
-			});
-	
-			archive.on('error', function(err){
-				throw err;
-			});
-	
-			archive.pipe(output);
-			archive.finalize();
-		}
-		else {
+	getAllFiles(dirPath).forEach(element => {
+
+		let dashArray = element.split("\\");
+		let l = dashArray.length;
+
+		if (element.endsWith('.zip')){
 			console.log(element + " already compressed!");
+		} else {
+			var output = fs.createWriteStream(element + '.zip');
+		
+			var archive = archiver('zip');
+		}
+	
+		output.on('close', function () {
+			console.log(archive.pointer() + ' total bytes');
+			console.log(element);
+		});
+
+		archive.on('warning', function(err) {
+			if (err.code === 'ENOENT') {
+				console.log(`Something went wrong: ${err.code}`);
+			} else {
+				throw err;
+			}
+		});
+
+		archive.on('error', function(err){
+			throw err.toString();
+		});
+
+		archive.pipe(output);
+
+		archive.directory(element, false);
+
+		archive.finalize();
+	});
+
+
+	var output = fs.createWriteStream(dirPath + '.zip');
+			
+	var archive = archiver('zip');
+
+	output.on('close', function () {
+		console.log(archive.pointer() + ' total bytes');
+		//console.log(element);
+	});
+
+	archive.on('warning', function(err) {
+		if (err.code === 'ENOENT') {
+			console.log(`Something went wrong: ${err.code}`);
+		} else {
+			throw err;
 		}
 	});
+
+	archive.on('error', function(err){
+		throw err.toString();
+	});
+	
+	archive.pipe(output);
+	
+	archive.directory(dirPath, false);
+	
+	archive.finalize();
 }
 
 //compressFiles(dirPath1);
 
-module.exports= compressFiles;
+module.exports = compressFiles;
