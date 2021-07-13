@@ -8,15 +8,24 @@ const rl = readline.createInterface({
     output: process.stdout
 });
 
-// import the modules
+var userSelection;
+var userPath;
 
-const getInput = () => {
+const getSelection = () => {//promise to get user selection
     return new Promise((resolve, reject) => {
         rl.question('Would you like to \'Compress Folders\' or \'Extract folders\' ?...', (option) => {
-            executeOption(option);
+            userSelection = option;
             resolve();
         })
-        
+    })
+}
+
+const getPath = () => {//promise to get the path from the user
+    return new Promise((resolve, reject) => {
+        rl.question('Please enter the file path you want to compress...', (path) => {
+            userPath=path;
+            resolve();
+        }); 
     })
 }
 
@@ -25,9 +34,11 @@ const run = async () => {
         let rendered = await art.font("Welcome to the amazing extracti-nator!", 'doom').completed();
         console.log(rendered);
     } catch (error) {
-        console.log("nope");
+        console.log("Welcome to the amazing extracti-nator!");
     }
-    await getInput();
+    await getSelection();
+    await getPath();
+    await executeOption(userSelection);
     rl.close();
 }
 
@@ -35,22 +46,18 @@ run();
 
 function executeOption(option){
     if (option.toLowerCase() == 'compress folder' || option.toLowerCase() == 'c') {
-        //console.log('You chose compression');
-        try {
-            rl.question('Please enter the file path you want to compress...', (path) => {
-                compress(validateInput(path));
-            });
+        console.log('You chose compression');
+        try { 
+            compress(validateInput(userPath));
         } catch (error) {
             console.log('Error: Could not compress file/s');
         }
     } 
     else if (option.toLowerCase() == 'extract folder' || option.toLowerCase() == 'e') {
         console.log('You chose extraction');
-        //call the appropriate method for extraction
+
         try {
-            rl.question('Please enter the file path you want to extract...', (path) => {
-                extract(validateInput(path));
-            })
+            extract(validateInput(userPath));
         } catch (error) {
             console.log('Error: Could not extract file/s');
         }
@@ -61,11 +68,11 @@ function executeOption(option){
     }
 }
 
-function validateInput(path){
-    if (path == null) {
+function validateInput(p){
+    if (p == null) {
         console.log('Please provide a path');
         run();
     } else {
-        return path;
+        return p;
     }
 }
