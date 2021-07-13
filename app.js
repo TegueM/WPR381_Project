@@ -49,6 +49,7 @@ function executeOption(option){
         console.log('You chose compression');
         try { 
             compress(validateInput(userPath));
+            
         } catch (error) {
             console.log('Error: Could not compress file/s');
         }
@@ -57,7 +58,11 @@ function executeOption(option){
         console.log('You chose extraction');
 
         try {
-            extract(validateInput(userPath));
+            extract.unzipFiles(validateInput(userPath));
+            setTimeout(() => {
+                extract.removeZips(userPath);
+
+            }, 3000);
         } catch (error) {
             console.log('Error: Could not extract file/s');
         }
