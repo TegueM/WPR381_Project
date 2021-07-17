@@ -35,7 +35,7 @@ function removeD(dirPath){
 
     setTimeout(() => {
         remove.removeSync(dirPath);
-    }, 3000);
+    }, 1000);
 }
 
 
@@ -53,25 +53,29 @@ function compressFiles(dirPath){
 			output.on('close', function () {
 				console.log(archive.pointer() + ' total bytes');
 				console.log(element);
+				
 			});
 	
 			archive.on('warning', function(err) {
 				if (err.code === 'ENOENT') {
-					console.log(`Something went wrong: ${err.code}`);
+					console.log(`Something went wrong: ${err.code} ------ ${err}`);
 				} else {
 					throw err;
 				}
 			});
-	
+			
 			archive.on('error', function(err){
 				throw err.toString();
 			});
 	
-			archive.pipe(output);		
-	
-			archive.directory(element, false);
-	
+			archive.pipe(output);
+			
+			if (fs.statSync(element).isDirectory()){
+				archive.directory(element, false);
+			}
+
 			archive.finalize();
+
 		}
 	});
 
@@ -105,4 +109,4 @@ function compressFiles(dirPath){
 
 //compressFiles(dirPath1);
 
-module.exports = {compressFiles,removeD};
+module.exports = compressFiles;
