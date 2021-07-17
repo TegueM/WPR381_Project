@@ -149,7 +149,7 @@ function getFileToCompress() {
                             console.log(filesInDir[file] + 'has been deleted')
                         })
                         setTimeout(() => {
-                            fs.rmdir(pathToCompress + '/' + filesInDir[file],(err)=>{
+                            fs.rmdir(pathToCompress + '/' + filesInDir[file],{recursive:true},(err)=>{
                                 if (err) {
                                     throw err;
                                 }
