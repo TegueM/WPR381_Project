@@ -24,6 +24,7 @@
     "ascii-art": "^2.8.1",
     "extract-zip": "^2.0.1",
     "is-valid-path": "^0.1.1",
-    "remove": "^0.1.5"
+    "remove": "^0.1.5",
+    "rimraf": "^3.0.2"
   }
 }
