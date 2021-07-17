@@ -6,6 +6,7 @@ const extracting = require('./extract');
 const deleted = require('./deleting');
 const fs = require('fs');
 const remove = require('remove');
+const rimraf = require('rimraf');
 
 
 const rl = readline.createInterface({
@@ -142,16 +143,22 @@ function getFileToCompress() {
                     if (filesInDir[file].endsWith('.zip') == false) {
 
                         console.log(filesInDir[file] + ' is a file/folder that will be deleted');
-                        remove.removeSync(pathToCompress + '/' + filesInDir[file]);
+                        //remove.removeSync(pathToCompress + '/' + filesInDir[file]);
 
-                        fs.rmdirSync(pathToCompress + '/' + filesInDir[file],{recursive: true},(err)=>{
+                        rimraf(pathToCompress + '/' + filesInDir[file],()=>{
+                            console.log(filesInDir[file] + 'has been deleted')
+                        })
+                        setTimeout(() => {
+                            fs.rmdir(pathToCompress + '/' + filesInDir[file],(err)=>{
                                 if (err) {
                                     throw err;
                                 }
                         })
-                        setTimeout(() => {
+                        }, 5000);
+                       
+                        /*setTimeout(() => {
                             remove.removeSync(pathToCompress + '/' + filesInDir[file]);
-                        }, 3000);
+                        }, 3000);*/
                     }
                 }
 
@@ -165,8 +172,6 @@ function getFileToCompress() {
             startProgram();
         }, 3000);
 
-
-        
     });
     
 }
@@ -202,7 +207,6 @@ function getFileToDecompress() {
             startProgram();
         }, 3000);
         
-
 
     })
     
