@@ -1,4 +1,6 @@
 const fs = require('fs');
+const remove = require('remove');
+const path = require('path');
 
 const removeFiles = function(path) {
     if (fs.existsSync(path)) {
@@ -25,4 +27,15 @@ const removeFiles = function(path) {
 
 //removeDir(pathToDir);
 
-module.exports = removeFiles;
+//module.exports = removeFiles;
+
+
+//////////////////////////////////////////////////////////////////////////
+
+function removeD(dirPath){
+   remove.removeSync(dirPath);
+}
+
+//removeD("C:/Users/YourSelf/Desktop/Test");
+
+module.exports = removeD;
