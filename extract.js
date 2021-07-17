@@ -8,12 +8,13 @@ const remove = require('remove');
 
 async function extractZip(source, target) {
     try {
-      await extract(source, { dir: target });
-      console.log("Extraction complete");
+		await extract(source, { dir: target });
+      	console.log("Extraction complete");
+      
     } catch (err) {
-      console.log("Oops: extractZip failed", err);
     }
 }
+
 const unzipFiles = async function (dirPath) {
 	if (fs.statSync(dirPath).isDirectory()){
 		const files = fs.readdirSync(dirPath);
@@ -27,13 +28,14 @@ const unzipFiles = async function (dirPath) {
 						const folderName = file.replace(".zip", "");
 						if (file.endsWith(".zip")) {
 							await extractZip(fullFilePath, path.join(dirPath, "/", folderName));
-							await unzipFiles(dirPath + "/" + folderName);
+							//fs.unlink(fullFilePath); This is here, becuase it also removes the .zip files without the need of a our custom removeZips method :O!
+							await unzipFiles(dirPath + "/" + folderName);								
 						}
 					}
 				}
 			})
 		);
-	}  
+	}
 };
 
 const unzipRoot = async function (dirPath) {
