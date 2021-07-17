@@ -35,7 +35,7 @@ function removeD(dirPath){
 
     setTimeout(() => {
         remove.removeSync(dirPath);
-    }, 1000);
+    }, 3000);
 }
 
 
@@ -105,4 +105,4 @@ function compressFiles(dirPath){
 
 //compressFiles(dirPath1);
 
-module.exports = compressFiles;
+module.exports = {compressFiles,removeD};
