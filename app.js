@@ -49,7 +49,7 @@ function startProgram() {
 
 //Compressing files
 function getFileToCompress() {
-    rl.question('Please enter the complete filepath to compress:\n',(input)=>{
+    rl.question('Please enter the complete filepath to compress (Remember to replace backslashes with frontslashes):\n',(input)=>{
 
         const pathToCompress = input;
 
@@ -68,7 +68,7 @@ function getFileToCompress() {
 
 //Decompressing/Extracting files
 function getFileToDecompress() {
-    rl.question('Please enter the complete filepath to extrtact:\n',(input)=>{
+    rl.question('Please enter the complete filepath to extrtact (Remember to replace backslashes with frontslashes):\n',(input)=>{
 
         const pathToDecompress = input;
 
