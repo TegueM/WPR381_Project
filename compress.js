@@ -69,7 +69,7 @@ function compressFiles(dirPath){
 	var archive = archiver('zip');
 
 	output.on('close', function () {
-		console.log(archive.pointer() + ' total bytes');
+		console.log(`Folder/File inside ${dirPath} are zipped AND\n zipped to ${dirPath}.zip`);
 	});
 
 	archive.on('warning', function(err) {
