@@ -68,7 +68,7 @@ function getFileToCompress() {
 
 //Decompressing/Extracting files
 function getFileToDecompress() {
-    rl.question('Please enter the complete filepath to extrtact (Remember to replace backslashes with frontslashes):\n',(input)=>{
+    rl.question('Please enter the complete filepath to extrtact (Remember to replace backslashes with frontslashes):\nNote: You can either give path to a directory or a .zip file\n',(input)=>{
 
         const pathToDecompress = input;
 
