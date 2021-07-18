@@ -2,40 +2,27 @@ const fs = require('fs');
 const remove = require('remove');
 const path = require('path');
 
-const removeFiles = function(path) {
-    if (fs.existsSync(path)) {
-        const files = fs.readdirSync(path)
-    
-        if (files.length > 0) {
-            files.forEach(function(filename) {
-            if (fs.statSync(path + "/" + filename).isDirectory()) {
-                removeDir(path + "/" + filename);
+//After extraction, delete the .zip files
+const removeZips = async function(dirPath) {
+    if (fs.statSync(dirPath).isDirectory()){
+    const files = fs.readdirSync(dirPath);
+    await Promise.all(
+        files.map(async (file) => {
+        if (fs.statSync(dirPath + "/" + file).isDirectory()) {
+            await removeZips(dirPath + "/" + file);
             } else {
-                if (filename.endsWith('.zip')){
-                    fs.unlinkSync(path + "/" + filename);
-                    console.log(path + "\\" + filename + " was removed");
-                }         
+                if ((fs.existsSync(dirPath))){
+                const fullFilePath = path.join(dirPath, "/", file);
+                const folderName = file.replace(".zip", "");
+                if (file.endsWith(".zip")) {
+                    await remove.removeSync(fullFilePath);
+                    await removeZips(dirPath + "/" + folderName);
+                }
+            }
             }
         })
-    } else {
-        console.log("No compressed files found in the " + path);
-    }
-    } else {
-    console.log(path + " path not found.");
-    }   
-  }
-
-//removeDir(pathToDir);
-
-//module.exports = removeFiles;
-
-
-//////////////////////////////////////////////////////////////////////////
-
-function removeD(dirPath){
-   remove.removeSync(dirPath);
+    );
+}
 }
 
-//removeD("C:/Users/YourSelf/Desktop/Test");
-
-module.exports = removeD;
+module.exports = removeZips;

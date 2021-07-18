@@ -3,7 +3,6 @@
 var archiver = require('archiver');
 const fs = require('fs');
 const path = require('path');
-const remove = require('remove');
 
 //Method to read list of folders and files
 const getAllFiles = function(dirPath, arrayOfFiles) {
@@ -23,24 +22,10 @@ const getAllFiles = function(dirPath, arrayOfFiles) {
 	return arrayOfFiles
   }
 
-////////////////////////////////////////////////////////////////////////////////////////////
-
-function removeD(dirPath){
-    const files = getAllFiles(dirPath);
-
-    for (let i = files.length - 1; i >= 0; i--) {
-        remove.removeSync(files[i]);
-        console.log("removed: " + files[i]);
-    }
-
-    setTimeout(() => {
-        remove.removeSync(dirPath);
-    }, 1000);
-}
-
-
 //method to compress mutliple folders
 function compressFiles(dirPath){	
+
+	//Compress files inside a directory
 	getAllFiles(dirPath).forEach(element => {
 		if (element.endsWith('.zip')){
 			console.log(element + " already compressed!");
@@ -52,8 +37,7 @@ function compressFiles(dirPath){
 
 			output.on('close', function () {
 				console.log(archive.pointer() + ' total bytes');
-				console.log(element);
-				
+				console.log(element);			
 			});
 	
 			archive.on('warning', function(err) {
@@ -79,13 +63,13 @@ function compressFiles(dirPath){
 		}
 	});
 
+	//Then compress the directory itself
 	var output = fs.createWriteStream(dirPath + '.zip');
 			
 	var archive = archiver('zip');
 
 	output.on('close', function () {
 		console.log(archive.pointer() + ' total bytes');
-		//console.log(element);
 	});
 
 	archive.on('warning', function(err) {
@@ -106,7 +90,5 @@ function compressFiles(dirPath){
 	
 	archive.finalize();
 }
-
-//compressFiles(dirPath1);
 
 module.exports = compressFiles;

@@ -1,11 +1,12 @@
 //install extract-zip module
 //npm install extract-zip --save
 
+//NPM packages
 const extract = require('extract-zip');
 const fs = require('fs');
 var path = require('path');
-const remove = require('remove');
 
+//Extract package
 async function extractZip(source, target) {
     try {
 		await extract(source, { dir: target });
@@ -15,6 +16,7 @@ async function extractZip(source, target) {
     }
 }
 
+//Method to read files in a directory and extract
 const unzipFiles = async function (dirPath) {
 	if (fs.statSync(dirPath).isDirectory()){
 		const files = fs.readdirSync(dirPath);
@@ -28,7 +30,6 @@ const unzipFiles = async function (dirPath) {
 						const folderName = file.replace(".zip", "");
 						if (file.endsWith(".zip")) {
 							await extractZip(fullFilePath, path.join(dirPath, "/", folderName));
-							//fs.unlink(fullFilePath); This is here, becuase it also removes the .zip files without the need of a our custom removeZips method :O!
 							await unzipFiles(dirPath + "/" + folderName);								
 						}
 					}
@@ -38,35 +39,11 @@ const unzipFiles = async function (dirPath) {
 	}
 };
 
+//If user input ends with .zip, extract first and then "unzipFiles"
 const unzipRoot = async function (dirPath) {
   const newRoot = dirPath.replace(".zip", "");
 
   await extractZip(dirPath, newRoot);
 };
 
-const removeZips = async function(dirPath) {
-		if (fs.statSync(dirPath).isDirectory()){
-		const files = fs.readdirSync(dirPath);
-		await Promise.all(
-			files.map(async (file) => {
-			if (fs.statSync(dirPath + "/" + file).isDirectory()) {
-				await removeZips(dirPath + "/" + file);
-				} else {
-					if ((fs.existsSync(dirPath))){
-					const fullFilePath = path.join(dirPath, "/", file);
-					const folderName = file.replace(".zip", "");
-					if (file.endsWith(".zip")) {
-						await remove.removeSync(fullFilePath);
-						await removeZips(dirPath + "/" + folderName);
-					}
-				}
-				}
-			})
-		);
-	}
-}
-
-//unzipFiles(dirPath1);
-//removeDir(dirPath1);
-
-module.exports = {unzipFiles, unzipRoot, removeZips};
+module.exports = {unzipFiles, unzipRoot};
